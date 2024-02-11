@@ -1,0 +1,7 @@
+version: '3'
+services:
+  web:
+    image: react_ui_example:latest
+    build: .
+    ports:
+      - "80:80"
