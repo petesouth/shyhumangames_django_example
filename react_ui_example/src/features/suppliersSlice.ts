@@ -22,6 +22,10 @@ export const suppliersSlice = createSlice({
     initialState,
     reducers: {
         setNextPageUrl(state, action: PayloadAction<string|null>) {
+            if( action.payload === null ) {
+                return;
+            }
+            
             state.next = action.payload
             state.hasMore = action.payload !== null
         },
