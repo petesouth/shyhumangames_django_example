@@ -76,7 +76,7 @@ const EndlessScrollList = () => {
             const isNearBottom = container.scrollTop + container.clientHeight >= container.scrollHeight - 20;
             if (isNearBottom && suppliersStateRef.current.hasMore && !suppliersStateRef.current.loading && suppliersStateRef.current.next !== null) {
                 // Note: Ensure `next` is obtained correctly here, as it should come from suppliersStateRef.current.next
-                fetchSuppliers('', '', suppliersStateRef.current.next);
+                fetchSuppliers(nameSearch, cityNumber, suppliersStateRef.current.next);
             }
         }
     };
@@ -110,7 +110,7 @@ const EndlessScrollList = () => {
                     } } onChangeCityNumber={(value: string): void=> {
                         setCityNumber(value);
                     } } onSubmit={(): void => {
-                        alert("Howdy: " + nameSearch + " " + cityNumber);
+                        fetchSuppliers(nameSearch, cityNumber, null);
                     } } />
                 </Col>
             </Row>

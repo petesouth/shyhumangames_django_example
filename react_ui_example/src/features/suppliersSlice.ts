@@ -30,8 +30,12 @@ export const suppliersSlice = createSlice({
             state.suppliers = [...state.suppliers, ...action.payload];
             console.log("addSuppliers: state", JSON.stringify(state));
         },
+        clearSuppliers(state) {
+            state.suppliers = [];
+            console.log("addSuppliers: state", JSON.stringify(state));
+        }
     },
 });
 
-export const { setNextPageUrl, addSuppliers } = suppliersSlice.actions;
+export const { setNextPageUrl, addSuppliers, clearSuppliers } = suppliersSlice.actions;
 export default suppliersSlice.reducer;
