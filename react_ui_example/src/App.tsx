@@ -6,11 +6,8 @@ import EndlessScrollList from './components/EndlessScrollList';
 
 function App() {
   return (
-    <div className="App">
-      <Container>
-        <EndlessScrollList />
-      </Container>
-      
+    <div>
+      <EndlessScrollList />
     </div>
   );
 }
