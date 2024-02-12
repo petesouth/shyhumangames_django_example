@@ -41,5 +41,4 @@ class SupplierListView(generics.ListAPIView):
         }
 
         response = JsonResponse(response_data)
-        response["Access-Control-Allow-Origin"] = "*"
         return response
