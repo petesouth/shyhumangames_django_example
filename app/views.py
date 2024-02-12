@@ -41,4 +41,5 @@ class SupplierListView(generics.ListAPIView):
         }
 
         response = JsonResponse(response_data)
+        
         return response
