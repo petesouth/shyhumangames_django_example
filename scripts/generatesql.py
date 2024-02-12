@@ -16,7 +16,7 @@ def generate_random_logo():
 
 sql_file = 'init_db.sql'
 with open(sql_file, 'w') as f:
-    for _ in range(1000000):
+    for _ in range(100000):
         license_number = generate_license_number()
         name = ''.join(random.choices("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", k=10))
         name_en = ''.join(random.choices("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", k=10))

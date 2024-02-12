@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { addSuppliers, setNextPageUrl } from './suppliersSlice';
 import axios from 'axios';
 // Import the types
-import { SuppliersResponse } from './types';
+import { Supplier, SuppliersResponse } from './types';
 
 export const useSuppliers = () => {
     const dispatch = useDispatch();
@@ -12,9 +12,10 @@ export const useSuppliers = () => {
         try {
             const baseUrl = `${process.env.REACT_APP_SERVER_URL}/app/v2/suppliers`;
             const url = nextPage || `${baseUrl}?country=1&lang=en&ordering=-popularity&search=${search}&city=${city}`;
+            
             const response: any = await axios.get(url);
+            dispatch(setNextPageUrl(response.data.next));
             dispatch(addSuppliers(response.data.results));
-            dispatch(setNextPageUrl((response.data.next) ? response.data.next : ''));
         } catch (error) {
             console.error('Failed to fetch suppliers:', error);
             // Handle error
