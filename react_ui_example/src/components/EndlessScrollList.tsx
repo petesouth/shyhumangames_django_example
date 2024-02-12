@@ -7,18 +7,33 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 const EndlessScrollList: React.FC = () => {
     const { fetchSuppliers } = useSuppliers();
-    const { suppliers, loading, error, hasMore, next } = useSelector((state: RootState) => state.suppliers);
+    const { suppliers, loading, error, hasMore, next } = useSelector((state: RootState) => {
+        return state.suppliers;   
+    });
+
+    const suppliersState = useSelector((state: RootState) => state.suppliers )
+    const suppliersStateRef = useRef(suppliersState);
+
+    console.log(suppliersState );
+
     const containerRef = useRef<HTMLDivElement | null>(null);
 
-    const handleScroll = useCallback(() => {
+    const handleScroll = () => {
         const container = containerRef.current;
         if (container) {
-            const isNearBottom = container.scrollTop + container.clientHeight >= container.scrollHeight - 20;
-            if (isNearBottom && hasMore && !loading && next !== null) {
-                fetchSuppliers('', '', next);
-            }
+          
+          const isNearBottom = container.scrollTop + container.clientHeight >= container.scrollHeight - 20;
+          if (isNearBottom && suppliersStateRef.current.hasMore && !suppliersStateRef.current.loading && suppliersStateRef.current.next !== null) {
+            // Note: Ensure `next` is obtained correctly here, as it should come from suppliersStateRef.current.next
+            fetchSuppliers('', '', suppliersStateRef.current.next);
+          }
         }
-    }, [fetchSuppliers, hasMore, loading]);
+      };
+
+    useEffect(() => {
+        suppliersStateRef.current = suppliersState;
+      }, [suppliersState]);
+
 
     useEffect(() => {
         // Initial load
@@ -28,7 +43,9 @@ const EndlessScrollList: React.FC = () => {
 
         const container = containerRef.current;
         if (container) {
-            container.addEventListener('scroll', handleScroll);
+            container.addEventListener('scroll', ()=>{
+                handleScroll();
+        });
         }
 
     }, []);
