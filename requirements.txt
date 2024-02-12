@@ -3,6 +3,7 @@ djangorestframework
 psycopg2-binary
 django-admin
 python-dotenv
+django-cors-headers
 
 
 
