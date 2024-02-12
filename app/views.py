@@ -6,7 +6,7 @@ from django.http import JsonResponse
 from rest_framework.pagination import CursorPagination
 
 class SupplierPagination(CursorPagination):
-    ordering = '-popularity'
+    ordering = '-id'
     page_size = 20  # Adjust as needed
     cursor_query_param = 'cursor'
     cursor_page_query_param = 'cursor'
