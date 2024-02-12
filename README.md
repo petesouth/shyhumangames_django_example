@@ -77,6 +77,12 @@ Once the server is running, you can access the API endpoints using a web browser
 
 - `/v2/suppliers`: This endpoint provides access to supplier data. You can use query parameters to filter and paginate the results.
 
+### React_ui_example  Will demonstrate calling this API for endless scrolling of "Suppliers"
+- The Sub project unser this project ./react_ui_example/
+- It contains it's own readme file.
+- Responsive Application written in react/redux/bootstrap  
+- It's an example of calling the server api in this django and demonstrates an endless scroll example.
+
 ## Contributing
 
 If you would like to contribute to this project, please follow these steps:
