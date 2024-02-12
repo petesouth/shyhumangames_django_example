@@ -37,6 +37,11 @@ DEBUG = True
 # Retrieve ALLOWED_HOSTS from environment variables
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(',')
 
+CORS_ALLOW_ALL_ORIGINS = True
+
+# Or specify allowed origins
+CORS_ALLOWED_ORIGINS = os.getenv('ALLOWED_HOSTS_CORS').split(',')
+
 
 # Application definition
 

@@ -16,41 +16,28 @@ class SupplierListView(generics.ListAPIView):
     pagination_class = SupplierPagination
 
     def get_queryset(self):
-        """
-        Optionally restricts the returned suppliers to a given city,
-        by filtering against a `city` query parameter in the URL.
-        """
         queryset = Supplier.objects.all()
         city = self.request.query_params.get('city', None)
         search = self.request.query_params.get('search', None)
 
-        if city is not None:
+        if city and city.isdigit():
             queryset = queryset.filter(city=city)
-
-        if search is not None:
-            queryset = queryset.filter(name__icontains=search)
+        if search:
+            queryset = queryset.filter(Q(name__icontains=search) | Q(name_en__icontains=search))
 
         return queryset
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
 
-        # Get the cursor value from request query parameters
-        cursor = self.request.query_params.get(self.pagination_class.cursor_query_param)
-
-        # Apply cursor-based pagination
         paginator = self.pagination_class()
         paginated_queryset = paginator.paginate_queryset(queryset, request)
-
-        # Serialize the paginated data
         serializer = self.get_serializer(paginated_queryset, many=True)
 
-        # Construct the response data with next and previous links
         response_data = {
             "next": paginator.get_next_link(),
             "previous": paginator.get_previous_link(),
             "results": serializer.data
         }
 
-        # Return JSON response
         return JsonResponse(response_data)
