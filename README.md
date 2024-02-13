@@ -125,7 +125,7 @@ This project is licensed under the MIT License.
 
 
 
-## Install mongo client
+## Install mongo client  This needs to be there to run the docker-compose
 
 To install the MongoDB client on an Ubuntu 22.10 server, you can use the MongoDB official repository, which provides the most up-to-date versions of MongoDB and its tools. This method ensures you get the MongoDB client compatible with Ubuntu 22.10. Here's how to do it:
 
