@@ -14,28 +14,20 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-
-  mongo:
-    image: mongo:latest
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: ${DB_USER}
-      MONGO_INITDB_ROOT_PASSWORD: ${DB_PASSWORD}
-    ports:
-      - "27017:27017"
-    
-  web:
-    build: .
-    ports:
-      - "8000:8000"
-    depends_on:
-      db:
-        condition: service_healthy
-    environment:
-      DB_HOST: db
-      DB_NAME: ${DB_NAME}
-      DB_USER: ${DB_USER}
-      DB_PASSWORD: ${DB_PASSWORD}
-      MONGO_HOST: mongo
-      MONGO_DB_NAME: ${DB_NAME}
-      MONGO_USER: ${DB_USER}
-      MONGO_PASSWORD: ${DB_PASSWORD}
+  
+  # web:
+  #   build: .
+  #   ports:
+  #     - "8000:8000"
+  #   depends_on:
+  #     db:
+  #       condition: service_healthy
+  #   environment:
+  #     DB_HOST: db
+  #     DB_NAME: ${DB_NAME}
+  #     DB_USER: ${DB_USER}
+  #     DB_PASSWORD: ${DB_PASSWORD}
+  #     MONGO_HOST: mongo
+  #     MONGO_DB_NAME: ${DB_NAME}
+  #     MONGO_USER: ${DB_USER}
+  #     MONGO_PASSWORD: ${DB_PASSWORD}
