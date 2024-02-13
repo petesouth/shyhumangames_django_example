@@ -59,11 +59,27 @@ To run this project locally, follow these steps:
    python manage.py migrate
    ```
 
+   -- Note* The Dockerfile calles migrate by default as it runs the server.
+
 8. **Load initial data into the database from init_db.sql:**
 
    ```bash
-   docker exec -i shyhumangames_django_example_db psql -U admin -d suppliers < scripts/init_db.sql
+   cd ./scripts
+   source ./insertdata.sh
    ```
+
+   *** If this is the first time you've run the app.  Create the init_db.sql by running
+   - From projet root
+
+   ```
+   source ./venv/bin/activate
+   cd scripts
+   python3 ./generatesql.py
+   ```
+
+   This creates
+   ./scripts/init_db.sql with 100,000 entires. Feel free to mod geneatesql.py and make it 1 million or whatever number
+
 
 9. **Finally, start the Django development server:**
 
