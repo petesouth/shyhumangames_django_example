@@ -86,12 +86,21 @@ To run this project locally, follow these steps:
    ```bash
    python manage.py runserver 0.0.0.0:8000
    ```
+### Note* docker-compose.yml starts up this server auto.  Comment it out if you'd like to run the server from command line directly.
 
 ## Usage
 
 Once the server is running, you can access the API endpoints using a web browser or a tool like curl or Postman. Here are the available endpoints:
 
 - `/v2/suppliers`: This endpoint provides access to supplier data. You can use query parameters to filter and paginate the results.
+
+
+## Remember to create the .env files from the .env.template files.
+
+```
+./.env
+./react_ui_example/.env
+```
 
 ### React_ui_example  Will demonstrate calling this API for endless scrolling of "Suppliers"
 - The Sub project unser this project ./react_ui_example/
