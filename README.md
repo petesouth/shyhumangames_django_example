@@ -123,3 +123,43 @@ If you would like to contribute to this project, please follow these steps:
 
 This project is licensed under the MIT License.
 
+
+
+## Install mongo client
+
+To install the MongoDB client on an Ubuntu 22.10 server, you can use the MongoDB official repository, which provides the most up-to-date versions of MongoDB and its tools. This method ensures you get the MongoDB client compatible with Ubuntu 22.10. Here's how to do it:
+
+Import the MongoDB public GPG key to ensure that the software package is authentic:
+
+```
+bash
+Copy code
+wget -qO - https://www.mongodb.org/static/pgp/server-5.0.asc | sudo apt-key add -
+```
+Add the MongoDB repository to your server. Since Ubuntu 22.10 might not have a direct repository, you can use the repository for the latest LTS version available at the time of your setup. For this example, we'll use a generic command; adjust it if there's a newer version available:
+
+```
+bash
+Copy code
+echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/5.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-5.0.list
+```
+
+Update your local package database to include the newly added MongoDB repository:
+
+```
+bash
+Copy code
+sudo apt-get update
+Install the MongoDB client. This step will only install the MongoDB client without the server 
+```
+components:
+
+```
+bash
+Copy code
+sudo apt-get install -y mongodb-org-shell
+```
+
+If you only need the MongoDB shell (mongo), this is the package you should install (mongodb-org-shell). It will allow you to connect to a MongoDB database running on another server without installing the entire MongoDB server package.
+
+Please note that MongoDB versions and repository URLs can change. If MongoDB has released newer versions after this instruction was created, you might want to check the official MongoDB documentation for the most current repository setup and version numbers.
