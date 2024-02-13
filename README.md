@@ -92,7 +92,7 @@ To run this project locally, follow these steps:
 
 Once the server is running, you can access the API endpoints using a web browser or a tool like curl or Postman. Here are the available endpoints:
 
-- `/v2/suppliers`: This endpoint provides access to supplier data. You can use query parameters to filter and paginate the results.
+- `/app/v2/suppliers`: This endpoint provides access to supplier data. You can use query parameters to filter and paginate the results.
 
 
 ## Remember to create the .env files from the .env.template files.
