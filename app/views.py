@@ -1,3 +1,4 @@
+from datetime import timedelta
 from django.db.models import Q
 from django.utils import timezone
 from rest_framework import generics, status
@@ -17,12 +18,15 @@ class KeyValueJsonStoreAPIView(APIView):
         if keys:
             keys = keys.split(',')
             values = KeyValueJsonStoreTTL.objects.filter(key__in=keys, expires_at__gt=timezone.now())
-            # Reset TTL
-            for value in values:
-                value.expires_at = timezone.now() + timedelta(minutes=5)
-                value.save()
         else:
-            values = KeyValueJsonStoreTTL.objects.filter(expires_at__gt=timezone.now())
+            return Response({"detail": "Not found."}, status=status.HTTP_404_NOT_FOUND)
+
+       
+        # Reset TTL for matched records
+        for value in values:
+            value.expires_at = timezone.now() + timedelta(minutes=5)
+            value.save()
+
         serializer = KeyValueJsonStoreSerializer(values, many=True)
         return Response(serializer.data)
 
@@ -40,11 +44,7 @@ class KeyValueJsonStoreAPIView(APIView):
                 defaults={'value': value, 'expires_at': timezone.now() + timedelta(minutes=5)}
             )
         return Response({"message": "Updated successfully"}, status=status.HTTP_200_OK)
-
-
-
-
-
+    
 
 
 class SupplierPagination(CursorPagination):
