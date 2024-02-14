@@ -131,7 +131,7 @@ This project is licensed under the MIT License.
 # Demonstation of a SQL version of a TTL key json store.
 
 ## KeyValueJsonStoreAPIView  app/v2/values/  api
--TTL_MINUTES in .env is how many minutes.  For example  TTL_MINUTES=5  means the TTL is 5 minutes.
+TTL_MINUTES in .env is how many minutes.  For example  TTL_MINUTES=5  means the TTL is 5 minutes.
 - The Age-ing is done via a chron job setup in the docker file.  run_delete_expired_values.sh gets run on the cron.
 - This goes Against the delete_expired_values.py script that runs every minute and deletes all entries
     that no longer should be in the database. 
