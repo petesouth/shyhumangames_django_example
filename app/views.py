@@ -1,4 +1,5 @@
 from datetime import timedelta
+import uuid
 from django.db.models import Q
 from django.utils import timezone
 from rest_framework import generics, status
@@ -14,38 +15,65 @@ from rest_framework.pagination import CursorPagination
 
 class KeyValueJsonStoreAPIView(APIView):
     def get(self, request, *args, **kwargs):
-        keys = request.query_params.get('keys')
-        if keys:
-            keys = keys.split(',')
-            values = KeyValueJsonStoreTTL.objects.filter(key__in=keys, expires_at__gt=timezone.now())
-        else:
-            return Response({"detail": "Not found."}, status=status.HTTP_404_NOT_FOUND)
+        try:
+            keys = request.query_params.get('keys', '').strip()
+            if keys:
+                keys = keys.split(',')
+                values = KeyValueJsonStoreTTL.objects.filter(key__in=keys, expires_at__gt=timezone.now())
+            else:
+                return Response({"error": "No keys provided or keys are empty."}, status=status.HTTP_400_BAD_REQUEST)
 
-       
-        # Reset TTL for matched records
-        for value in values:
-            value.expires_at = timezone.now() + timedelta(minutes=5)
-            value.save()
+            # Reset TTL for matched records
+            for value in values:
+                value.expires_at = timezone.now() + timedelta(minutes=5)
+                value.save()
 
-        serializer = KeyValueJsonStoreSerializer(values, many=True)
-        return Response(serializer.data)
+            serializer = KeyValueJsonStoreSerializer(values, many=True)
+            return Response(serializer.data)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def post(self, request, *args, **kwargs):
-        serializer = KeyValueJsonStoreSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
+        try:
+            value = request.data.get('value')
+            if not value:
+                return Response({"error": "Value field is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+            # Generate a unique UUID string for the key
+            unique_key = str(uuid.uuid4())
+
+            # Create a new entry using the unique key
+            new_entry = KeyValueJsonStoreTTL.objects.create(
+                key=unique_key,  # Assign the generated unique key here
+                value=value,
+                expires_at=timezone.now() + timedelta(minutes=5)
+            )
+
+            # Serialize and return the new entry
+            serializer = KeyValueJsonStoreSerializer(new_entry)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
     def patch(self, request, *args, **kwargs):
-        for key, value in request.data.items():
-            obj, created = KeyValueJsonStoreTTL.objects.update_or_create(
-                key=key,
-                defaults={'value': value, 'expires_at': timezone.now() + timedelta(minutes=5)}
-            )
-        return Response({"message": "Updated successfully"}, status=status.HTTP_200_OK)
-    
+        try:
+            if not request.data:
+                return Response({"error": "Patch data is required."}, status=status.HTTP_400_BAD_REQUEST)
 
+            responses = []
+            for key, value in request.data.items():
+                obj, created = KeyValueJsonStoreTTL.objects.update_or_create(
+                    key=key,
+                    defaults={'value': value, 'expires_at': timezone.now() + timedelta(minutes=5)}
+                )
+                serializer = KeyValueJsonStoreSerializer(obj)
+                responses.append(serializer.data)
+
+            return Response(responses, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
 
 class SupplierPagination(CursorPagination):
     ordering = '-id'
