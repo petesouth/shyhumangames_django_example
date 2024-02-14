@@ -136,3 +136,4 @@ TTL_MINUTES in .env is how many minutes.  For example  TTL_MINUTES=5  means the 
 - This goes Against the delete_expired_values.py script that runs every minute and deletes all entries
     that no longer should be in the database. 
 - The script in ./ called test_key_value_api.py calls this api as a rest client to test out the various cases.  After the server is running, you can run this script to see what and how the API functions.  Good way to see how it works as well. 
+- See Dockerfile for details
