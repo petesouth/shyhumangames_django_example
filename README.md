@@ -45,6 +45,7 @@ To run this project locally, follow these steps:
    DB_HOST=0.0.0.0
    DB_PORT=5432
    ALLOWED_HOSTS=127.0.0.1,localhost,192.168.12.131
+   TTL_MINUTES=10
    ```
 
 6. **Start the PostgreSQL database using Docker Compose:**
