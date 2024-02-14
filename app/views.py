@@ -1,4 +1,5 @@
 from datetime import timedelta
+import os
 import uuid
 from django.db.models import Q
 from django.utils import timezone
@@ -39,21 +40,21 @@ class KeyValueJsonStoreAPIView(APIView):
             if not value:
                 return Response({"error": "Value field is required."}, status=status.HTTP_400_BAD_REQUEST)
 
-            # Generate a unique UUID string for the key
             unique_key = str(uuid.uuid4())
 
-            # Create a new entry using the unique key
+            ttl_minutes = int(os.environ.get('TTL_MINUTES', 5))  # Use default of 5 minutes if not specified
+
             new_entry = KeyValueJsonStoreTTL.objects.create(
-                key=unique_key,  # Assign the generated unique key here
+                key=unique_key,
                 value=value,
-                expires_at=timezone.now() + timedelta(minutes=5)
+                expires_at=timezone.now() + timedelta(minutes=ttl_minutes)
             )
 
-            # Serialize and return the new entry
             serializer = KeyValueJsonStoreSerializer(new_entry)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 
     def patch(self, request, *args, **kwargs):

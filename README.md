@@ -163,3 +163,11 @@ sudo apt-get install -y mongodb-org-shell
 If you only need the MongoDB shell (mongo), this is the package you should install (mongodb-org-shell). It will allow you to connect to a MongoDB database running on another server without installing the entire MongoDB server package.
 
 Please note that MongoDB versions and repository URLs can change. If MongoDB has released newer versions after this instruction was created, you might want to check the official MongoDB documentation for the most current repository setup and version numbers.
+
+
+## KeyValueJsonStoreAPIView  app/v2/values/  api
+-TTL_MINUTES in .env is how many minutes.  For example  TTL_MINUTES=5  means the TTL is 5 minutes.
+- The Age-ing is done via a chron job setup in the docker file.  run_delete_expired_values.sh gets run on the cron.
+- This goes Against the delete_expired_values.py script that runs every minute and deletes all entries
+    that no longer should be in the database. 
+- The script in ./ called test_key_value_api.py calls this api as a rest client to test out the various cases.  After the server is running, you can run this script to see what and how the API functions.  Good way to see how it works as well. 
